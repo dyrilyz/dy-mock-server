@@ -1,0 +1,26 @@
+{
+  "name": "dy-mock-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RilyZhang/dy-mock-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RilyZhang/dy-mock-server/issues"
+  },
+  "homepage": "https://github.com/RilyZhang/dy-mock-server#readme",
+  "devDependencies": {
+    "electron": "^5.0.5"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
