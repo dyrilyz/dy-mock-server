@@ -1,11 +1,11 @@
 const {app, BrowserWindow, ipcMain} = require('electron')
 
-ipcMain.on('main-win-minimize', (e, id) => {
+ipcMain.on('win-minimize', (e, id) => {
     const win = BrowserWindow.fromId(id)
     if (win) win.minimize()
 })
 
-ipcMain.on('main-win-close', (e, id) => {
+ipcMain.on('win-close', (e, id) => {
     const win = BrowserWindow.fromId(id)
     if (win) win.close()
 })
@@ -15,20 +15,64 @@ ipcMain.on('top-toggle', (e, flag, id) => {
     if (win) win.setAlwaysOnTop(flag)
 })
 
-ipcMain.on('new-server', initWindow)
+// 事件中转(子窗口->父窗口)
+ipcMain.on('transfer', (e, data) => {
+    const win = BrowserWindow.fromId(data.id)
+    if (win) {
+        const parent = win.getParentWindow()
+        parent && parent.webContents.send(data.to, data.data)
+        if (data.ctrl === 'close') {
+            win.close()
+        }
+    }
+})
+
+ipcMain.on('add-server-modal', (e, id) => {
+    const win = createWindow({
+        modal: true,
+        parent: BrowserWindow.fromId(id),
+        width: 350,
+        minWidth: this.width,
+        height: 180,
+        minHeight: this.height,
+        resizable: false
+    })
+    win.loadFile('pages/add-server/add-server.html')
+})
+
+ipcMain.on('add-ifc-modal', (e, id) => {
+    const win = createWindow({
+        modal: true,
+        parent: BrowserWindow.fromId(id),
+        width: 500,
+        minWidth: this.width,
+        height: 550,
+        minHeight: this.height,
+        resizable: false
+    })
+    win.loadFile('pages/add-ifc/add-ifc.html')
+})
 
 // 创建窗口
-function createWindow () {
-    let win = new BrowserWindow({
-        width: 500,
-        height: 300,
+function createWindow (obj) {
+    let wConf = {
+        width: 950,
+        height: 650,
+        minWidth: 950,
+        minHeight: 650,
         frame: false,
         webPreferences: {
             nodeIntegration: true
         },
-        // resizable: false,
-        show: false
-    })
+        transparent: true,
+        show: false,
+    }
+
+    if (obj) {
+        Object.assign(wConf, obj)
+    }
+
+    let win = new BrowserWindow(wConf)
 
     win.on('closed', () => {
         win = null
@@ -39,13 +83,12 @@ function createWindow () {
         win.webContents.send('window-created', win.id)
     })
 
+    win.webContents.openDevTools()
+
     return win
 }
 
-// 打开窗口
-function initWindow () {
+app.on('ready', () => {
     const win = createWindow()
     win.loadFile('pages/index/index.html')
-}
-
-app.on('ready', initWindow)
+})

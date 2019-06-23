@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   font-size: 14px;
+  transition: all 0.2s;
 }
 html {
   width: 100%;
@@ -11,29 +12,204 @@ html body {
   width: 100%;
   height: 100%;
   display: flex;
-  border: 1px solid #39f;
   box-sizing: border-box;
-  box-shadow: 0 0 50px #000;
+  overflow: hidden;
+  background-image: url("../bg.jpeg");
+  background-size: cover;
+  user-select: none;
 }
 html body * {
   display: flex;
   flex-direction: column;
+}
+.btn {
+  padding: 7px 23px;
+  background-color: #c8c8c8;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.btn:hover {
+  background-color: #aaaaaa;
+}
+.btn-info {
+  background-color: #39f;
+  color: #fff;
+}
+.btn-info:hover {
+  background-color: #2f87e1;
+}
+.btn-success {
+  background-color: #10b926;
+  color: #fff;
+}
+.btn-success:hover {
+  background-color: #109a26;
 }
 .app {
   flex: 1;
   flex-direction: row;
 }
 .app nav {
-  width: 180px;
+  width: 250px;
   height: 100%;
-  background-color: #39f;
+  background-color: #555555dd;
+  color: #fff;
+  -webkit-app-region: drag;
+}
+.app nav .logo {
+  width: 100%;
+  height: 120px;
+  align-items: center;
+  justify-content: center;
+}
+.app nav .logo .iconfont {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+.app nav .entity-list {
+  -webkit-app-region: no-drag;
+  flex: 1;
+  overflow-y: auto;
+}
+.app nav .entity-list::-webkit-scrollbar {
+  background-color: #fffa;
+  width: 4px;
+}
+.app nav .entity-list::-webkit-scrollbar-thumb {
+  background-color: #000d;
+}
+.app nav .entity-list li {
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px 15px;
+}
+.app nav .entity-list li:hover {
+  background-color: #00000044;
+}
+.app nav .entity-list li.active {
+  background-color: #00000066;
+}
+.app nav .entity-list .entity-name {
+  display: block;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.app nav .entity-list .entity-fun {
+  flex-direction: row;
+}
+.app nav .entity-list .entity-fun .iconfont:hover {
+  cursor: pointer;
+}
+.app nav .entity-list .entity-fun .iconfont + .iconfont {
+  margin-left: 10px;
 }
 .app article {
   flex: 1;
-  background-color: #e5e5e5;
+  background-color: #e5e5e5dd;
 }
 .app article header {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #d0d0d0;
+  padding: 5px;
   height: 40px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   -webkit-app-region: drag;
+}
+.app article header .new-project {
+  -webkit-app-region: no-drag;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 10px;
+  cursor: pointer;
+  padding: 5px 10px;
+  background-color: #3330;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+.app article header .new-project:hover {
+  background-color: #3333;
+}
+.app article header .new-project .iconfont {
+  font-size: 20px;
+  margin-right: 5px;
+}
+.app article header .win-fun {
+  flex-direction: row;
+}
+.app article header .win-fun .iconfont {
+  -webkit-app-region: no-drag;
+  width: 40px;
+  height: 40px;
+  color: #333;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transform: rotate(0);
+  transition: all 0.2s;
+  border-radius: 3px;
+  font-weight: bold;
+}
+.app article header .win-fun .iconfont:hover {
+  transform: rotate(180deg);
+  background-color: #3333;
+}
+.app article .conf-container {
+  box-sizing: border-box;
+  flex: 1;
+  padding: 10px;
+}
+.app article .conf-container .btn-box {
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.app article .conf-container .req-list {
+  flex: 1;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding-right: 10px;
+  user-select: text;
+}
+.app article .conf-container .req-list::-webkit-scrollbar {
+  background-color: #fffa;
+  width: 4px;
+}
+.app article .conf-container .req-list::-webkit-scrollbar-thumb {
+  background-color: #000d;
+}
+.app article .conf-container .req-list li {
+  width: 100%;
+  flex-direction: row;
+}
+.app article .conf-container .req-list li + li {
+  border-top: 1px solid #aaa;
+}
+.app article .conf-container .req-list li > div {
+  padding: 10px 0;
+  width: 100px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.app article .conf-container .req-list li > div:nth-of-type(2) {
+  flex: 1;
+}
+.app article .conf-container .req-list li > div:nth-of-type(3) {
+  flex: 1;
+}
+.app article .conf-container .req-list li > div:nth-of-type(5) {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.app article .conf-container .req-list li > div:nth-of-type(5) i {
+  cursor: pointer;
+}
+.app article .conf-container .req-list li > div:nth-of-type(5) .iconfont + .iconfont {
+  margin-left: 10px;
 }

@@ -3,16 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <title>dy-mock-server</title>
+    <!--<link rel="stylesheet" href="../iconfont/iconfont.css">-->
+    <link rel="stylesheet" href="http://at.alicdn.com/t/font_1249560_ze048smzsu.css">
     <link rel="stylesheet" href="./index.css">
 </head>
 <body>
 <div :controller="app" class="app">
-    <nav></nav>
+    <nav>
+        <div class="logo">
+            <i class="iconfont iconecsyunfuwuqiECS"></i>
+            <div>DY-MOCK-SERVER</div>
+        </div>
+        <ul class="entity-list">
+            <li :for="($index,item) in @servers" :class="[@active === $index && 'active']" :click="tabServer($index)">
+                <div class="entity-name" :text="item.name"></div>
+                <div class="entity-fun">
+                    <i class="iconfont iconqidong"></i>
+                    <i class="iconfont iconxiugai"></i>
+                    <i class="iconfont iconshanchu"></i>
+                </div>
+            </li>
+        </ul>
+    </nav>
     <article>
         <header>
-            <div class="win-fun"></div>
+            <a class="new-project" :click="addServerModal"><i class="iconfont iconxinjian"></i>新建</a>
+            <a href="javascript:location.reload()" style="-webkit-app-region: no-drag;">refresh</a>
+            <div class="win-fun">
+                <i class="iconfont iconshezhi"></i>
+                <i class="iconfont iconzuixiaohua" :click="minimize"></i>
+                <i class="iconfont iconClose" :click="close"></i>
+            </div>
         </header>
-        <a href="javascript:location.reload()">refresh</a>
+        <div class="conf-container">
+            <div class="btn-box">
+                <div>
+                    <a class="btn btn-info" :click="addIfcModal">添加接口</a>
+                </div>
+                <div>
+                    <a class="btn btn-success">保存</a>
+                </div>
+            </div>
+            <ul class="req-list">
+                <li>
+                    <div>请求方式</div>
+                    <div>请求路径</div>
+                    <div>返回值</div>
+                    <div>状态码</div>
+                    <div>操作</div>
+                </li>
+                <li :for="($index,item) in ifcArr">
+                    <div :text="item.method"></div>
+                    <div :text="item.url"></div>
+                    <div :text="item.respVal"></div>
+                    <div :text="item.httpCode"></div>
+                    <div>
+                        <i class="iconfont iconxiugai1"></i>
+                        <i class="iconfont iconshanchu" :click="removeIfc($index)"></i>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </article>
 </div>
 <script src="../avalon.min.js"></script>

@@ -1,0 +1,123 @@
+@mainColor: #555555;
+
+* {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    box-sizing: border-box;
+    color: #333;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+
+    body {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        box-sizing: border-box;
+        overflow: hidden;
+        user-select: none;
+
+        * {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
+
+.btn {
+    padding: 7px 23px;
+    background-color: #c8c8c8;
+    transition: all .2s;
+    cursor: pointer;
+    display: block;
+
+    &:hover {
+        background-color: #aaaaaa;
+    }
+
+    &-info {
+        background-color: #39f;
+        color: #fff;
+
+        &:hover {
+            background-color: #2f87e1;
+        }
+    }
+
+    &-success {
+        background-color: #10b926;
+        color: #fff;
+
+        &:hover {
+            background-color: #109a26;
+        }
+    }
+}
+
+.add-server-modal {
+    flex: 1;
+}
+
+header {
+    width: 100%;
+    height: 40px;
+    background-color: @mainColor;
+    -webkit-app-region: drag;
+    color: #eee;
+    justify-content: center;
+    padding: 0 10px;
+}
+
+article {
+    flex: 1;
+    background-color: #fff;
+    justify-content: center;
+
+    .form-group {
+        flex-direction: row;
+        padding: 0 20px;
+
+        .label {
+            width: 80px;
+            flex-direction: row-reverse;
+            margin-right: 10px;
+            line-height: 32px;
+        }
+
+        .controller {
+            flex: 1;
+
+            input {
+                resize: none;
+                outline: none;
+                height: 32px;
+                border: 1px solid #c7c7c7;
+                border-radius: 5px;
+                padding: 0 5px;
+                font-family: 'Microsoft YaHei';
+            }
+        }
+    }
+}
+
+footer {
+    width: 100%;
+    height: 50px;
+    border-top: 1px solid #ccc;
+    background-color: #fff;
+    flex-direction: row-reverse !important;
+    justify-content: space-between;
+
+    .btn-group {
+        flex-direction: row;
+        align-items: center;
+
+        .btn {
+            margin-right: 10px;
+            font-size: 14px;
+        }
+    }
+}

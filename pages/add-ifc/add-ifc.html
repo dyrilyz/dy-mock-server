@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./add-ifc.css">
+</head>
+<body>
+<div class="add-ifc-modal" :controller="addIfcModal">
+    <header>添加接口</header>
+    <article>
+        <div class="form-group">
+            <div class="label">请求方式</div>
+            <div class="controller">
+                <select :duplex="method">
+                    <option value="get">get</option>
+                    <option value="post">post</option>
+                    <option value="put">put</option>
+                    <option value="delete">delete</option>
+                </select>
+                <!--<input type="text">-->
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">请求路径</div>
+            <div class="controller">
+                <input type="text" placeholder="例如/api/user，默认为/" :duplex="url">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">返回值</div>
+            <div class="controller">
+                <textarea :duplex="respVal"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="label">状态码</div>
+            <div class="controller">
+                <input type="text" :duplex="httpCode">
+            </div>
+        </div>
+    </article>
+    <footer>
+        <div class="btn-group">
+            <a class="btn btn-success" :click="ok">确定</a>
+            <a class="btn btn-info" :click="cancel">取消</a>
+        </div>
+        <a href="javascript:location.reload()" style="-webkit-app-region: no-drag;">refresh</a>
+    </footer>
+</div>
+<script src="../avalon.min.js"></script>
+<script src="./add-ifc.js"></script>
+</body>
+</html>

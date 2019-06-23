@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./add-server.css">
+</head>
+<body>
+<div class="add-server-modal" :controller="addServerModal">
+    <header>新建实例</header>
+    <article>
+        <div class="form-group">
+            <div class="label">实例名称</div>
+            <div class="controller">
+                <input type="text" :duplex="name">
+            </div>
+        </div>
+    </article>
+    <footer>
+        <div class="btn-group">
+            <a class="btn btn-success" :click="ok">确定</a>
+            <a class="btn btn-info" :click="cancel">取消</a>
+        </div>
+        <a href="javascript:location.reload()" style="-webkit-app-region: no-drag;">refresh</a>
+    </footer>
+</div>
+<script src="../avalon.min.js"></script>
+<script src="./add-server.js"></script>
+</body>
+</html>

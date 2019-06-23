@@ -2,7 +2,11 @@
     margin: 0;
     padding: 0;
     font-size: 14px;
+    transition: all .2s;
 }
+
+@mainColor: #555555dd;
+@contentColor: #e5e5e5dd;
 
 html {
     width: 100%;
@@ -12,13 +16,44 @@ html {
         width: 100%;
         height: 100%;
         display: flex;
-        border: 1px solid #39f;
         box-sizing: border-box;
-        box-shadow: 0 0 50px #000;
+        overflow: hidden;
+        background-image: url("../bg.jpeg");
+        background-size: cover;
+        user-select: none;
 
         * {
             display: flex;
             flex-direction: column;
+        }
+    }
+}
+
+.btn {
+    padding: 7px 23px;
+    background-color: #c8c8c8;
+    transition: all .2s;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #aaaaaa;
+    }
+
+    &-info {
+        background-color: #39f;
+        color: #fff;
+
+        &:hover {
+            background-color: #2f87e1;
+        }
+    }
+
+    &-success {
+        background-color: #10b926;
+        color: #fff;
+
+        &:hover {
+            background-color: #109a26;
         }
     }
 }
@@ -28,20 +63,203 @@ html {
     flex-direction: row;
 
     nav {
-        width: 180px;
+        width: 250px;
         height: 100%;
-        background-color: #39f;
+        background-color: @mainColor;
+        color: #fff;
+        -webkit-app-region: drag;
+
+        .logo {
+            width: 100%;
+            height: 120px;
+            align-items: center;
+            justify-content: center;
+
+            .iconfont {
+                font-size: 30px;
+                margin-bottom: 10px;
+            }
+        }
+
+        .entity-list {
+            -webkit-app-region: no-drag;
+            flex: 1;
+            overflow-y: auto;
+
+            &::-webkit-scrollbar {
+                background-color: #fffa;
+                width: 4px;
+
+                &-thumb {
+                    background-color: #000d;
+                }
+            }
+
+            li {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 10px 15px;
+
+                &:hover {
+                    background-color: #00000044;
+                }
+
+                &.active {
+                    background-color: #00000066;
+                }
+            }
+
+            .entity-name {
+                display: block;
+                max-width: 150px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                cursor: pointer;
+            }
+
+            .entity-fun {
+                flex-direction: row;
+
+                .iconfont {
+                    &:hover {
+                        cursor: pointer;
+                    }
+
+                    & + .iconfont {
+                        margin-left: 10px;
+                    }
+                }
+
+            }
+        }
     }
 
     article {
         flex: 1;
-        background-color: #e5e5e5;
+        background-color: @contentColor;
 
         header {
-            border-bottom: 1px solid #ccc;
+            border-bottom: 1px solid #d0d0d0;
+            padding: 5px;
             height: 40px;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
             -webkit-app-region: drag;
-            .win-fun {}
+
+            .new-project {
+                -webkit-app-region: no-drag;
+                flex-direction: row;
+                align-items: center;
+                margin-left: 10px;
+                cursor: pointer;
+                padding: 5px 10px;
+                background-color: #3330;
+                border-radius: 3px;
+                transition: all .2s;
+
+                &:hover {
+                    background-color: #3333;
+                }
+
+                .iconfont {
+                    font-size: 20px;
+                    margin-right: 5px;
+                }
+            }
+
+            .win-fun {
+                flex-direction: row;
+
+                .iconfont {
+                    -webkit-app-region: no-drag;
+                    width: 40px;
+                    height: 40px;
+                    color: #333;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    transform: rotate(0);
+                    transition: all .2s;
+                    border-radius: 3px;
+                    font-weight: bold;
+
+                    &:hover {
+                        transform: rotate(180deg);
+                        background-color: #3333;
+                    }
+                }
+            }
+        }
+
+        .conf-container {
+            box-sizing: border-box;
+            flex: 1;
+            padding: 10px;
+
+            .btn-box {
+                flex-direction: row;
+                justify-content: space-between;
+                margin-bottom: 10px;
+            }
+
+            .req-list {
+                flex: 1;
+                overflow-y: auto;
+                box-sizing: border-box;
+                padding-right: 10px;
+                user-select: text;
+
+                &::-webkit-scrollbar {
+                    background-color: #fffa;
+                    width: 4px;
+
+                    &-thumb {
+                        background-color: #000d;
+                    }
+                }
+
+                li {
+                    width: 100%;
+                    flex-direction: row;
+
+                    & + li {
+                        border-top: 1px solid #aaa;
+                    }
+
+                    & > div {
+                        padding: 10px 0;
+                        width: 100px;
+                        display: block;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+
+                        &:nth-of-type(2) {
+                            flex: 1;
+                        }
+
+                        &:nth-of-type(3) {
+                            flex: 1;
+                        }
+
+                        &:nth-of-type(5) {
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: center;
+
+                            i {
+                                cursor: pointer;
+                            }
+
+                            .iconfont + .iconfont {
+                                margin-left: 10px;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
