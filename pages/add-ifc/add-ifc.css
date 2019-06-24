@@ -1,32 +1,8 @@
-* {
-  margin: 0;
-  padding: 0;
-  font-size: 16px;
-  box-sizing: border-box;
-  color: #333;
-}
-html {
-  width: 100%;
-  height: 100%;
-}
-html body {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  box-sizing: border-box;
-  overflow: hidden;
-  user-select: none;
-}
-html body * {
-  display: flex;
-  flex-direction: column;
-}
 .btn {
   padding: 7px 23px;
   background-color: #c8c8c8;
   transition: all 0.2s;
   cursor: pointer;
-  display: block;
 }
 .btn:hover {
   background-color: #aaaaaa;
@@ -44,6 +20,29 @@ html body * {
 }
 .btn-success:hover {
   background-color: #109a26;
+}
+html {
+  width: 100%;
+  height: 100%;
+}
+html body {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  box-sizing: border-box;
+  overflow: hidden;
+  user-select: none;
+}
+html body * {
+  display: flex;
+  flex-direction: column;
+}
+* {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  box-sizing: border-box;
+  color: #333;
 }
 .add-ifc-modal {
   flex: 1;

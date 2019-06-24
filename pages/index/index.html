@@ -19,7 +19,7 @@
                 <div class="entity-name" :text="item.name"></div>
                 <div class="entity-fun">
                     <i class="iconfont iconqidong"></i>
-                    <i class="iconfont iconxiugai"></i>
+                    <i class="iconfont iconxiugai" :click="addServerModal(item.name)"></i>
                     <i class="iconfont iconshanchu"></i>
                 </div>
             </li>
@@ -27,7 +27,7 @@
     </nav>
     <article>
         <header>
-            <a class="new-project" :click="addServerModal"><i class="iconfont iconxinjian"></i>新建</a>
+            <a class="new-project" :click="addServerModal()"><i class="iconfont iconxinjian"></i>新建</a>
             <a href="javascript:location.reload()" style="-webkit-app-region: no-drag;">refresh</a>
             <div class="win-fun">
                 <i class="iconfont iconshezhi"></i>

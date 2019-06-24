@@ -1,4 +1,5 @@
 const {app, BrowserWindow, ipcMain} = require('electron')
+const wm = require('./window-manager')
 
 ipcMain.on('win-minimize', (e, id) => {
     const win = BrowserWindow.fromId(id)
@@ -15,22 +16,10 @@ ipcMain.on('top-toggle', (e, flag, id) => {
     if (win) win.setAlwaysOnTop(flag)
 })
 
-// 事件中转(子窗口->父窗口)
-ipcMain.on('transfer', (e, data) => {
-    const win = BrowserWindow.fromId(data.id)
-    if (win) {
-        const parent = win.getParentWindow()
-        parent && parent.webContents.send(data.to, data.data)
-        if (data.ctrl === 'close') {
-            win.close()
-        }
-    }
-})
-
-ipcMain.on('add-server-modal', (e, id) => {
-    const win = createWindow({
+ipcMain.on('add-server-modal', (e, obj) => {
+    const win = wm.createWindow({
         modal: true,
-        parent: BrowserWindow.fromId(id),
+        parent: BrowserWindow.fromId(obj.id),
         width: 350,
         minWidth: this.width,
         height: 180,
@@ -38,6 +27,10 @@ ipcMain.on('add-server-modal', (e, id) => {
         resizable: false
     })
     win.loadFile('pages/add-server/add-server.html')
+    win.webContents.openDevTools()
+    if (obj.conf) {
+        wm.winToWin(obj.id, win.id, obj.conf.eventName, obj.conf.data)
+    }
 })
 
 ipcMain.on('add-ifc-modal', (e, id) => {
@@ -83,12 +76,10 @@ function createWindow (obj) {
         win.webContents.send('window-created', win.id)
     })
 
-    // win.webContents.openDevTools()
-
     return win
 }
 
 app.on('ready', () => {
-    const win = createWindow()
+    const win = wm.createWindow()
     win.loadFile('pages/index/index.html')
 })
