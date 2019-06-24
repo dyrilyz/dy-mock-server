@@ -83,7 +83,7 @@ function createWindow (obj) {
         win.webContents.send('window-created', win.id)
     })
 
-    win.webContents.openDevTools()
+    // win.webContents.openDevTools()
 
     return win
 }
