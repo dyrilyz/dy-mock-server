@@ -1,0 +1,23 @@
+.btn {
+  padding: 7px 23px;
+  background-color: #c8c8c8;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.btn:hover {
+  background-color: #aaaaaa;
+}
+.btn-info {
+  background-color: #39f;
+  color: #fff;
+}
+.btn-info:hover {
+  background-color: #2f87e1;
+}
+.btn-success {
+  background-color: #10b926;
+  color: #fff;
+}
+.btn-success:hover {
+  background-color: #109a26;
+}
