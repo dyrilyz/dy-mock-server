@@ -82,4 +82,5 @@ function createWindow (obj) {
 app.on('ready', () => {
     const win = wm.createWindow()
     win.loadFile('pages/index/index.html')
+    win.webContents.openDevTools()
 })

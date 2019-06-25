@@ -68,7 +68,7 @@ html body * {
 .app nav {
   width: 250px;
   height: 100%;
-  background-color: #555555dd;
+  background: linear-gradient(#64aff2, #6165fc);
   color: #fff;
   -webkit-app-region: drag;
 }
@@ -124,7 +124,7 @@ html body * {
 }
 .app article {
   flex: 1;
-  background-color: #e5e5e5dd;
+  background-color: #fff;
 }
 .app article header {
   border-bottom: 1px solid #d0d0d0;
@@ -202,7 +202,7 @@ html body * {
   flex-direction: row;
 }
 .app article .conf-container .req-list li + li {
-  border-top: 1px solid #aaa;
+  border-top: 1px solid #dcdcdc;
 }
 .app article .conf-container .req-list li > div {
   padding: 10px 0;
