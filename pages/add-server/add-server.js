@@ -1,8 +1,11 @@
 const {ipcRenderer} = require('electron')
 let wid = ''
+let update = false
+
 
 const vm = avalon.define({
     $id: 'addServerModal',
+    id: '',
     name: '',
     cancel () {
         ipcRenderer.send('win-close', wid)
@@ -14,8 +17,11 @@ const vm = avalon.define({
         }
         ipcRenderer.send('transfer', {
             id: wid,
-            to: 'add-server',
-            data: {name: this.name},
+            to: update ? 'update-server' : 'add-server',
+            data: {
+                id: this.id,
+                name: this.name
+            },
             ctrl: 'close'
         })
     },
@@ -27,5 +33,7 @@ ipcRenderer.on('window-created', (e, id) => {
 })
 
 ipcRenderer.on('init-data', (e, obj) => {
+    vm.id = obj.id
     vm.name = obj.name
+    update = true
 })

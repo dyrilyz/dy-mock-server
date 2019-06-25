@@ -3,6 +3,8 @@ const os = require('os')
 const fs = require('fs')
 const path = require('path')
 const confPath = path.resolve(os.homedir(), '.dymock')
+const express = require('express')
+const apps = []
 
 let wid = ''
 
@@ -41,18 +43,32 @@ const vm = avalon.define({
     close () {
         ipcRenderer.send('win-close', wid)
     },
-    addServerModal (name) {
+    startSv (id) {
+    },
+    stopSv (id) {
+    },
+    addServerModal (item) {
         const data = {id: wid}
-        if (name) {
+        if (item) {
             data.conf = {
                 eventName: 'init-data',
-                data: {name}
+                data: item
             }
         }
         ipcRenderer.send('add-server-modal', data)
     },
-    addIfcModal () {
-        ipcRenderer.send('add-ifc-modal', wid)
+    addIfcModal (item) {
+        if (!this.servers.length) {
+            return
+        }
+        const data = {id: wid}
+        if (item) {
+            data.conf = {
+                eventName: 'init-data',
+                data: item
+            }
+        }
+        ipcRenderer.send('add-ifc-modal', data)
     },
     tabServer (active) {
         this.active = active
@@ -62,6 +78,23 @@ const vm = avalon.define({
         this.ifcArr.splice(index, 1)
         this.servers[this.active].ifcArr = this.ifcArr
         writeFile(confPath, JSON.stringify(vm.servers))
+    },
+    removeServer (e, index) {
+        e.stopPropagation()
+        this.servers.splice(index, 1)
+        if (index < this.active) {
+            this.active--
+        } else if (index === this.active) {
+            if (this.servers[this.active + 1]) {
+                this.ifcArr = this.servers[this.active].ifcArr
+            } else if (this.active > 0) {
+                this.active--
+                this.ifcArr = this.servers[this.active].ifcArr
+            } else {
+                this.ifcArr = []
+            }
+        }
+        writeFile(confPath, JSON.stringify(vm.servers))
     }
 })
 
@@ -70,22 +103,56 @@ ipcRenderer.on('window-created', (e, id) => {
 })
 
 ipcRenderer.on('add-server', (e, data) => {
-    vm.servers.push({name: data.name, ifcArr: []})
+    vm.servers.push({
+        id: new Date() * 1,
+        name: data.name,
+        ifcArr: []
+    })
     writeFile(confPath, JSON.stringify(vm.servers))
 })
+
+ipcRenderer.on('update-server', (e, data) => {
+    for (const i in vm.servers) {
+        if (vm.servers[i].id === data.id) {
+            vm.servers[i].name = data.name
+            break
+        }
+    }
+    writeFile(confPath, JSON.stringify(vm.servers))
+})
+
 ipcRenderer.on('add-ifc', (e, data) => {
     vm.servers[vm.active].ifcArr.push(data)
     vm.ifcArr = avalon.mix(true, [], vm.servers[vm.active].ifcArr)
-    // vm.ifcArr = vm.servers[vm.active].ifcArr
+    writeFile(confPath, JSON.stringify(vm.servers))
+})
+
+ipcRenderer.on('update-ifc', (e, data) => {
+    for (const i in vm.servers[vm.active].ifcArr) {
+        if (data.id === vm.servers[vm.active].ifcArr[i].id) {
+            vm.servers[vm.active].ifcArr[i].method = data.method
+            vm.servers[vm.active].ifcArr[i].url = data.url
+            vm.servers[vm.active].ifcArr[i].respVal = data.respVal
+            vm.servers[vm.active].ifcArr[i].httpCode = data.httpCode
+            break
+        }
+    }
     writeFile(confPath, JSON.stringify(vm.servers))
 })
 
 function init () {
     readFile(confPath).then(data => {
         vm.servers = JSON.parse(data.toString())
-        vm.ifcArr = vm.servers[vm.active].ifcArr
+        if (vm.servers.length) {
+            vm.ifcArr = vm.servers[vm.active].ifcArr
+        }
     }, e => {
-        writeFile(confPath, '[]')
+        const server = {
+            id: new Date() * 1,
+            name: 'default',
+            ifcArr: []
+        }
+        writeFile(confPath, JSON.stringify([server]))
         init()
     })
 }

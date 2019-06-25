@@ -19,8 +19,8 @@
                 <div class="entity-name" :text="item.name"></div>
                 <div class="entity-fun">
                     <i class="iconfont iconqidong"></i>
-                    <i class="iconfont iconxiugai" :click="addServerModal(item.name)"></i>
-                    <i class="iconfont iconshanchu"></i>
+                    <i class="iconfont iconxiugai" :click="addServerModal({id:item.id,name:item.name})"></i>
+                    <i class="iconfont iconshanchu" :click="removeServer($event,$index)"></i>
                 </div>
             </li>
         </ul>
@@ -38,10 +38,7 @@
         <div class="conf-container">
             <div class="btn-box">
                 <div>
-                    <a class="btn btn-info" :click="addIfcModal">添加接口</a>
-                </div>
-                <div>
-                    <a class="btn btn-success">保存</a>
+                    <a class="btn" :class="[servers.length > 0 && 'btn-info']" :click="addIfcModal()">添加接口</a>
                 </div>
             </div>
             <ul class="req-list">
@@ -58,7 +55,7 @@
                     <div :text="item.respVal"></div>
                     <div :text="item.httpCode"></div>
                     <div>
-                        <i class="iconfont iconxiugai1"></i>
+                        <i class="iconfont iconxiugai1" :click="addIfcModal(item)"></i>
                         <i class="iconfont iconshanchu" :click="removeIfc($index)"></i>
                     </div>
                 </li>

@@ -8,7 +8,7 @@ function createWindow (opt) {
         minWidth: 950,
         minHeight: 650,
         frame: false,
-        transparent: true,
+        // transparent: true,
         show: false,
         webPreferences: {
             nodeIntegration: true

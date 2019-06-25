@@ -27,16 +27,15 @@ ipcMain.on('add-server-modal', (e, obj) => {
         resizable: false
     })
     win.loadFile('pages/add-server/add-server.html')
-    win.webContents.openDevTools()
     if (obj.conf) {
         wm.winToWin(obj.id, win.id, obj.conf.eventName, obj.conf.data)
     }
 })
 
-ipcMain.on('add-ifc-modal', (e, id) => {
-    const win = createWindow({
+ipcMain.on('add-ifc-modal', (e, obj) => {
+    const win = wm.createWindow({
         modal: true,
-        parent: BrowserWindow.fromId(id),
+        parent: BrowserWindow.fromId(obj.id),
         width: 500,
         minWidth: this.width,
         height: 550,
@@ -44,6 +43,9 @@ ipcMain.on('add-ifc-modal', (e, id) => {
         resizable: false
     })
     win.loadFile('pages/add-ifc/add-ifc.html')
+    if (obj.conf) {
+        wm.winToWin(obj.id, win.id, obj.conf.eventName, obj.conf.data)
+    }
 })
 
 // 创建窗口
@@ -57,7 +59,6 @@ function createWindow (obj) {
         webPreferences: {
             nodeIntegration: true
         },
-        transparent: true,
         show: false,
     }
 
