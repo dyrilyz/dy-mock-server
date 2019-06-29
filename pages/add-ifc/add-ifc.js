@@ -9,10 +9,10 @@ const vm = avalon.define({
     url: '/api',
     respVal: '{}',
     httpCode: 200,
-    cancel () {
+    cancel() {
         ipcRenderer.send('win-close', wid)
     },
-    ok () {
+    ok() {
         if (!this.url) {
             alert('url不能为空！')
             return
@@ -34,6 +34,16 @@ const vm = avalon.define({
             ctrl: 'close'
         })
     },
+    keydown(e) {
+        if (e.keyCode === 9) {
+            e.preventDefault()
+            const index = e.target.selectionStart
+            const prev = this.respVal.substring(0, index)
+            const next = this.respVal.substring(index)
+            this.respVal = `${prev}\t${next}`
+            e.target.setSelectionRange(index + 1, index + 1)
+        }
+    }
 })
 
 ipcRenderer.on('window-created', (e, id) => {
