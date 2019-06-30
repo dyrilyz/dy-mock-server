@@ -3,23 +3,35 @@
   background-color: #c8c8c8;
   transition: all 0.2s;
   cursor: pointer;
+  box-shadow: 0 0 5px #ccc;
+  border-radius: 3px;
 }
 .btn:hover {
   background-color: #aaaaaa;
 }
 .btn-info {
-  background-color: #39f;
+  background-color: #41b6ff;
   color: #fff;
 }
 .btn-info:hover {
   background-color: #2f87e1;
 }
 .btn-success {
-  background-color: #10b926;
+  background-color: #57c667;
   color: #fff;
 }
 .btn-success:hover {
   background-color: #109a26;
+}
+.btn-warning {
+  background-color: #ff7e35;
+  color: #fff;
+}
+.btn-warning:hover {
+  background-color: #cb6531;
+}
+.hide {
+  display: none;
 }
 html {
   width: 100%;
@@ -47,29 +59,31 @@ html body * {
 .add-ifc-modal {
   flex: 1;
 }
+body {
+  background: linear-gradient(#dae9f2, #f7f7ff);
+}
 header {
   width: 100%;
   height: 40px;
-  background-color: #555555;
+  background: linear-gradient(to right, #64aff2, #dbcdfc);
   -webkit-app-region: drag;
-  color: #eee;
+  color: #fff;
   justify-content: center;
   padding: 0 10px;
 }
 article {
   flex: 1;
-  background-color: #fff;
   justify-content: center;
 }
 article .form-group {
   flex-direction: row;
-  padding: 0 20px;
+  padding: 0 58px 0 40px;
 }
 article .form-group + .form-group {
   margin-top: 20px;
 }
 article .form-group .label {
-  width: 100px;
+  width: 70px;
   flex-direction: row-reverse;
   margin-right: 10px;
   line-height: 32px;
@@ -94,9 +108,7 @@ article .form-group .controller textarea {
 }
 footer {
   width: 100%;
-  height: 50px;
-  border-top: 1px solid #ccc;
-  background-color: #fff;
+  height: 65px;
   flex-direction: row-reverse !important;
   justify-content: space-between;
 }

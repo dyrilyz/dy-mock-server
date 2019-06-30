@@ -42,7 +42,6 @@ ipcMain.on('add-ifc-modal', (e, obj) => {
         minHeight: this.height,
         resizable: false
     })
-    win.webContents.openDevTools()
     win.loadFile('pages/add-ifc/add-ifc.html')
     if (obj.conf) {
         wm.winToWin(obj.id, win.id, obj.conf.eventName, obj.conf.data)
@@ -83,5 +82,6 @@ function createWindow (obj) {
 
 app.on('ready', () => {
     const win = wm.createWindow()
+    // win.webContents.openDevTools()
     win.loadFile('pages/index/index.html')
 })

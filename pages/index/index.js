@@ -1,10 +1,12 @@
+avalon.config({
+    debug: false
+})
 const {ipcRenderer} = require('electron')
 const os = require('os')
 const fs = require('fs')
 const path = require('path')
 const confPath = path.resolve(os.homedir(), '.dymock')
-const express = require('express')
-const apps = []
+const {createServer, closeServer} = require('../../server')
 
 let wid = ''
 
@@ -35,6 +37,7 @@ function writeFile (path, data) {
 const vm = avalon.define({
     $id: 'app',
     active: 0,
+    runs: [],
     servers: [],
     ifcArr: [],
     minimize () {
@@ -43,9 +46,20 @@ const vm = avalon.define({
     close () {
         ipcRenderer.send('win-close', wid)
     },
-    startSv (id) {
+    startSv (id, index) {
+        this.runs[index].status = 2
+        for (const i in this.servers) {
+            if (this.servers[i].id === id) {
+                createServer(JSON.parse(JSON.stringify(this.servers[i])))
+                break
+            }
+        }
     },
-    stopSv (id) {
+    stopSv (id, index) {
+        this.runs[index].status = 1
+        closeServer(id).then(() => {
+            this.runs[index].status = 0
+        })
     },
     addServerModal (item) {
         const data = {id: wid}
@@ -58,6 +72,10 @@ const vm = avalon.define({
         ipcRenderer.send('add-server-modal', data)
     },
     addIfcModal (item) {
+        if (isRun()) {
+            alert('请先关闭server')
+            return
+        }
         if (!this.servers.length) {
             return
         }
@@ -75,12 +93,20 @@ const vm = avalon.define({
         this.ifcArr = this.servers[this.active].ifcArr
     },
     removeIfc (index) {
+        if (isRun()) {
+            alert('请先关闭server')
+            return
+        }
         this.ifcArr.splice(index, 1)
         this.servers[this.active].ifcArr = this.ifcArr
         writeFile(confPath, JSON.stringify(vm.servers))
     },
     removeServer (e, index) {
         e.stopPropagation()
+        if (isRun()) {
+            alert('请先关闭server')
+            return
+        }
         this.servers.splice(index, 1)
         if (index < this.active) {
             this.active--
@@ -103,11 +129,13 @@ ipcRenderer.on('window-created', (e, id) => {
 })
 
 ipcRenderer.on('add-server', (e, data) => {
+    const [id] = [new Date() * 1]
     vm.servers.push({
-        id: new Date() * 1,
+        id,
         name: data.name,
         ifcArr: []
     })
+    vm.runs.push({id, status: 0})
     writeFile(confPath, JSON.stringify(vm.servers))
 })
 
@@ -140,12 +168,30 @@ ipcRenderer.on('update-ifc', (e, data) => {
     writeFile(confPath, JSON.stringify(vm.servers))
 })
 
+function isRun () {
+    for (const i in vm.runs) {
+        if (vm.runs[i].id === vm.servers[vm.active].id) {
+            return vm.runs[i].status !== 0
+        }
+    }
+    return false
+}
+
 function init () {
     readFile(confPath).then(data => {
         vm.servers = JSON.parse(data.toString())
         if (vm.servers.length) {
             vm.ifcArr = vm.servers[vm.active].ifcArr
         }
+        vm.servers.forEach(item => {
+            /**
+             * status:
+             *      0: 已关闭
+             *      1: 关闭中
+             *      2: 已启动
+             */
+            vm.runs.push({id: item.id, status: 0})
+        })
     }, e => {
         const server = {
             id: new Date() * 1,

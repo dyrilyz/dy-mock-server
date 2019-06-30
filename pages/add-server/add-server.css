@@ -3,23 +3,35 @@
   background-color: #c8c8c8;
   transition: all 0.2s;
   cursor: pointer;
+  box-shadow: 0 0 5px #ccc;
+  border-radius: 3px;
 }
 .btn:hover {
   background-color: #aaaaaa;
 }
 .btn-info {
-  background-color: #39f;
+  background-color: #41b6ff;
   color: #fff;
 }
 .btn-info:hover {
   background-color: #2f87e1;
 }
 .btn-success {
-  background-color: #10b926;
+  background-color: #57c667;
   color: #fff;
 }
 .btn-success:hover {
   background-color: #109a26;
+}
+.btn-warning {
+  background-color: #ff7e35;
+  color: #fff;
+}
+.btn-warning:hover {
+  background-color: #cb6531;
+}
+.hide {
+  display: none;
 }
 html {
   width: 100%;
