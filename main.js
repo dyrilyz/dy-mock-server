@@ -22,11 +22,12 @@ ipcMain.on('add-server-modal', (e, obj) => {
         parent: BrowserWindow.fromId(obj.id),
         width: 350,
         minWidth: this.width,
-        height: 180,
+        height: 250,
         minHeight: this.height,
         resizable: false
     })
     win.loadFile('pages/add-server/add-server.html')
+    // win.webContents.openDevTools()
     if (obj.conf) {
         wm.winToWin(obj.id, win.id, obj.conf.eventName, obj.conf.data)
     }

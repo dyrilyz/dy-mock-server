@@ -44,6 +44,7 @@ html body {
   box-sizing: border-box;
   overflow: hidden;
   user-select: none;
+  background: linear-gradient(#dae9f2, #f7f7ff);
 }
 html body * {
   display: flex;
@@ -62,20 +63,22 @@ html body * {
 header {
   width: 100%;
   height: 40px;
-  background-color: #555555;
+  background: linear-gradient(to right, #64aff2, #dbcdfc);
   -webkit-app-region: drag;
-  color: #eee;
+  color: #fff;
   justify-content: center;
   padding: 0 10px;
 }
 article {
   flex: 1;
-  background-color: #fff;
   justify-content: center;
 }
 article .form-group {
   flex-direction: row;
   padding: 0 20px;
+}
+article .form-group + .form-group {
+  margin-top: 20px;
 }
 article .form-group .label {
   width: 80px;
@@ -98,8 +101,6 @@ article .form-group .controller input {
 footer {
   width: 100%;
   height: 50px;
-  border-top: 1px solid #ccc;
-  background-color: #fff;
   flex-direction: row-reverse !important;
   justify-content: space-between;
 }

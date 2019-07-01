@@ -44,6 +44,7 @@ html body {
   box-sizing: border-box;
   overflow: hidden;
   user-select: none;
+  background: linear-gradient(#dae9f2, #f7f7ff);
 }
 html body * {
   display: flex;
@@ -58,9 +59,6 @@ html body * {
 }
 .add-ifc-modal {
   flex: 1;
-}
-body {
-  background: linear-gradient(#dae9f2, #f7f7ff);
 }
 header {
   width: 100%;
