@@ -1,3 +1,4 @@
+const {dialog} = require('../util')
 const {ipcRenderer} = require('electron')
 let wid = ''
 let update = false
@@ -14,11 +15,11 @@ const vm = avalon.define({
     },
     ok() {
         if (!this.url) {
-            alert('url不能为空！')
+            dialog('url不能为空！')
             return
         }
         if (!this.httpCode) {
-            alert('http状态码不能为空！')
+            dialog('http状态码不能为空！')
             return
         }
         ipcRenderer.send('transfer', {

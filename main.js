@@ -49,38 +49,6 @@ ipcMain.on('add-ifc-modal', (e, obj) => {
     }
 })
 
-// 创建窗口
-function createWindow (obj) {
-    let wConf = {
-        width: 950,
-        height: 650,
-        minWidth: 950,
-        minHeight: 650,
-        frame: false,
-        webPreferences: {
-            nodeIntegration: true
-        },
-        show: false,
-    }
-
-    if (obj) {
-        Object.assign(wConf, obj)
-    }
-
-    let win = new BrowserWindow(wConf)
-
-    win.on('closed', () => {
-        win = null
-    })
-
-    win.webContents.on('did-finish-load', e => {
-        win.show()
-        win.webContents.send('window-created', win.id)
-    })
-
-    return win
-}
-
 app.on('ready', () => {
     const win = wm.createWindow()
     // win.webContents.openDevTools()

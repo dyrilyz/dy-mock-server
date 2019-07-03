@@ -1,4 +1,5 @@
 const {ipcRenderer} = require('electron')
+const {dialog} = require('../util')
 let wid = ''
 let update = false
 
@@ -13,11 +14,11 @@ const vm = avalon.define({
     },
     ok () {
         if (!this.name) {
-            alert('实例名称不能为空！')
+            dialog('实例名称不能为空！')
             return
         }
-        if (isNaN(this.port * 1) && this.port % 1 !== 0) {
-            alert('端口号必须为整数！')
+        if (!this.port || isNaN(this.port * 1) || this.port % 1 !== 0) {
+            dialog('端口号必须为整数！')
             return
         }
         ipcRenderer.send('transfer', {
@@ -31,7 +32,6 @@ const vm = avalon.define({
             ctrl: 'close'
         })
     },
-
 })
 
 ipcRenderer.on('window-created', (e, id) => {

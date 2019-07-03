@@ -21,7 +21,7 @@
                     <i class="iconfont iconqidong" :click="startSv(item.id,$index)" :class="[runs[$index].status!==0 && 'hide']"></i>
                     <i class="iconfont iconLoading" :class="[runs[$index].status!==1 && 'hide']"></i>
                     <i class="iconfont iconai08" :click="stopSv(item.id,$index)" :class="[runs[$index].status!==2 && 'hide']"></i>
-                    <i class="iconfont iconxiugai" :click="addServerModal({id:item.id,name:item.name})"></i>
+                    <i class="iconfont iconxiugai" :click="addServerModal(item)"></i>
                     <i class="iconfont iconshanchu" :click="removeServer($event,$index)"></i>
                 </div>
             </li>

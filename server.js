@@ -22,7 +22,7 @@ function createServer (conf) {
     const server = http.createServer(app)
     const sockets = [];
 
-    server.listen(8080, () => {
+    server.listen(conf.port, () => {
         apps.push({id: conf.id, server, sockets})
     })
 
@@ -32,6 +32,12 @@ function createServer (conf) {
             sockets.splice(sockets.indexOf(socket), 1);
         });
     });
+
+    return new Promise((resolve, reject) => {
+        server.on('error', () => {
+            reject(`${conf.port}端口已被占用！`)
+        });
+    })
 }
 
 function closeServer (id) {

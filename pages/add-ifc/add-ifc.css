@@ -50,6 +50,9 @@ html body * {
   display: flex;
   flex-direction: column;
 }
+html body script {
+  display: none;
+}
 * {
   margin: 0;
   padding: 0;

@@ -1,6 +1,7 @@
 avalon.config({
     debug: false
 })
+const {dialog} = require('../util')
 const {ipcRenderer} = require('electron')
 const os = require('os')
 const fs = require('fs')
@@ -50,7 +51,10 @@ const vm = avalon.define({
         this.runs[index].status = 2
         for (const i in this.servers) {
             if (this.servers[i].id === id) {
-                createServer(JSON.parse(JSON.stringify(this.servers[i])))
+                createServer(JSON.parse(JSON.stringify(this.servers[i]))).catch(e => {
+                    this.runs[index].status = 0
+                    dialog(e)
+                })
                 break
             }
         }
@@ -63,6 +67,7 @@ const vm = avalon.define({
     },
     addServerModal (item) {
         const data = {id: wid}
+        console.log(item)
         if (item) {
             data.conf = {
                 eventName: 'init-data',
@@ -133,7 +138,8 @@ ipcRenderer.on('add-server', (e, data) => {
     vm.servers.push({
         id,
         name: data.name,
-        ifcArr: []
+        port: data.port * 1,
+        ifcArr: [],
     })
     vm.runs.push({id, status: 0})
     writeFile(confPath, JSON.stringify(vm.servers))
@@ -143,6 +149,7 @@ ipcRenderer.on('update-server', (e, data) => {
     for (const i in vm.servers) {
         if (vm.servers[i].id === data.id) {
             vm.servers[i].name = data.name
+            vm.servers[i].port = data.port * 1
             break
         }
     }
