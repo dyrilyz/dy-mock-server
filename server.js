@@ -4,6 +4,13 @@ const apps = []
 
 function createServer (conf) {
     const app = express()
+    app.all('*', function (req, res, next) {
+        res.set('Access-Control-Allow-Origin', '*');
+        res.set('Access-Control-Allow-Headers', 'Content-Type,token');
+        res.set('Access-Control-Allow-Methods', '*');
+        res.set('Content-Type', 'application/json;charset=utf-8');
+        next();
+    });
     conf.ifcArr.forEach((item, index) => {
         const {method, url, respVal, httpCode} = item
         // console.log(method, url, respVal, httpCode)
