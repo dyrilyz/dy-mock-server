@@ -21,6 +21,7 @@ const vm = avalon.define({
             dialog('端口号必须为整数！')
             return
         }
+        console.log(this.port)
         ipcRenderer.send('transfer', {
             id: wid,
             to: update ? 'update-server' : 'add-server',
@@ -39,6 +40,7 @@ ipcRenderer.on('window-created', (e, id) => {
 })
 
 ipcRenderer.on('init-data', (e, obj) => {
+    console.log(obj)
     vm.id = obj.id
     vm.name = obj.name
     vm.port = obj.port

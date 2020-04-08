@@ -1,6 +1,5 @@
-avalon.config({
-    debug: false
-})
+avalon.config({debug: false})
+
 const {dialog} = require('../util')
 const {ipcRenderer} = require('electron')
 const os = require('os')
@@ -11,7 +10,7 @@ const {createServer, closeServer} = require('../../server')
 
 let wid = ''
 
-function readFile (path) {
+function readFile(path) {
     return new Promise((resolve, reject) => {
         fs.readFile(path, (err, data) => {
             if (err) {
@@ -23,7 +22,7 @@ function readFile (path) {
     })
 }
 
-function writeFile (path, data) {
+function writeFile(path, data) {
     return new Promise((resolve, reject) => {
         fs.writeFile(path, data, (err, data) => {
             if (err) {
@@ -41,31 +40,30 @@ const vm = avalon.define({
     runs: [],
     servers: [],
     ifcArr: [],
-    minimize () {
+    minimize() {
         ipcRenderer.send('win-minimize', wid)
     },
-    close () {
+    close() {
         ipcRenderer.send('win-close', wid)
     },
-    startSv (id, index) {
+    startSv(id, index) {
         this.runs[index].status = 2
         for (const i in this.servers) {
             if (this.servers[i].id === id) {
-                createServer(JSON.parse(JSON.stringify(this.servers[i]))).catch(e => {
+                return createServer(JSON.parse(JSON.stringify(this.servers[i]))).catch(e => {
                     this.runs[index].status = 0
                     dialog(e)
                 })
-                break
             }
         }
     },
-    stopSv (id, index) {
+    stopSv(id, index) {
         this.runs[index].status = 1
-        closeServer(id).then(() => {
+        return closeServer(id).then(() => {
             this.runs[index].status = 0
         })
     },
-    addServerModal (item) {
+    addServerModal(item) {
         const data = {id: wid}
         console.log(item)
         if (item) {
@@ -76,11 +74,11 @@ const vm = avalon.define({
         }
         ipcRenderer.send('add-server-modal', data)
     },
-    addIfcModal (item) {
-        if (isRun()) {
-            alert('请先关闭server')
-            return
-        }
+    addIfcModal(item) {
+        // if (isRun()) {
+        //     alert('请先关闭server')
+        //     return
+        // }
         if (!this.servers.length) {
             return
         }
@@ -93,11 +91,11 @@ const vm = avalon.define({
         }
         ipcRenderer.send('add-ifc-modal', data)
     },
-    tabServer (active) {
+    tabServer(active) {
         this.active = active
         this.ifcArr = this.servers[this.active].ifcArr
     },
-    removeIfc (index) {
+    removeIfc(index) {
         if (isRun()) {
             alert('请先关闭server')
             return
@@ -106,7 +104,7 @@ const vm = avalon.define({
         this.servers[this.active].ifcArr = this.ifcArr
         writeFile(confPath, JSON.stringify(vm.servers))
     },
-    removeServer (e, index) {
+    removeServer(e, index) {
         e.stopPropagation()
         if (isRun()) {
             alert('请先关闭server')
@@ -148,34 +146,49 @@ ipcRenderer.on('add-server', (e, data) => {
 ipcRenderer.on('update-server', (e, data) => {
     for (const i in vm.servers) {
         if (vm.servers[i].id === data.id) {
-            vm.servers[i].name = data.name
-            vm.servers[i].port = data.port * 1
+            data.port = +data.port
+            Object.assign(data, {ifcArr: vm.servers[i].ifcArr})
+            vm.servers.splice(i, 1, data)
             break
         }
     }
     writeFile(confPath, JSON.stringify(vm.servers))
 })
 
-ipcRenderer.on('add-ifc', (e, data) => {
+ipcRenderer.on('add-ifc', async (e, data) => {
     vm.servers[vm.active].ifcArr.push(data)
     vm.ifcArr = avalon.mix(true, [], vm.servers[vm.active].ifcArr)
+
+    // 热更新
+    if (vm.runs[vm.active].status !== 0) {
+        await vm.stopSv(vm.servers[vm.active].id, vm.active)
+        await vm.startSv(vm.servers[vm.active].id, vm.active)
+    }
+
     writeFile(confPath, JSON.stringify(vm.servers))
 })
 
-ipcRenderer.on('update-ifc', (e, data) => {
+ipcRenderer.on('update-ifc', async (e, data) => {
     for (const i in vm.servers[vm.active].ifcArr) {
         if (data.id === vm.servers[vm.active].ifcArr[i].id) {
             vm.servers[vm.active].ifcArr[i].method = data.method
             vm.servers[vm.active].ifcArr[i].url = data.url
             vm.servers[vm.active].ifcArr[i].respVal = data.respVal
             vm.servers[vm.active].ifcArr[i].httpCode = data.httpCode
+
+            // 热更新
+            if (vm.runs[vm.active].status !== 0) {
+                await vm.stopSv(vm.servers[vm.active].id, vm.active)
+                await vm.startSv(vm.servers[vm.active].id, vm.active)
+            }
+
             break
         }
     }
     writeFile(confPath, JSON.stringify(vm.servers))
 })
 
-function isRun () {
+function isRun() {
     for (const i in vm.runs) {
         if (vm.runs[i].id === vm.servers[vm.active].id) {
             return vm.runs[i].status !== 0
@@ -184,7 +197,7 @@ function isRun () {
     return false
 }
 
-function init () {
+function init() {
     readFile(confPath).then(data => {
         vm.servers = JSON.parse(data.toString())
         if (vm.servers.length) {
@@ -203,6 +216,7 @@ function init () {
         const server = {
             id: new Date() * 1,
             name: 'default',
+            port: 80,
             ifcArr: []
         }
         writeFile(confPath, JSON.stringify([server]))
